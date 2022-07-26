@@ -3,9 +3,17 @@ services:
   web: 
     build: 
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.dev # This will tell Docker to look for the Dockerfile.dev file instead of the default Dockerfile
     ports: 
       - "3000:3000"
     volumes:
       - /home/node/app/node_modules # Do NOT map a folder up against node_modules inside the container
       - .:/home/node/app # map th current directory outside the container the app folder inside the container
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /home/node/app/node_modules # The dash upfront just mean this will be an array
+      - .:/home/node/app 
+    command: ["npm", "run", "test"] # This will override the main primary command run start and rerun the command after any change in the app folder
